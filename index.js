@@ -1,5 +1,9 @@
-"use strict"
+const obj ={
+    aaa: "value"
+};
 
-const object = Object.freeze({ key:"value"});
-
-object.key = "value"; 
+if(obj.hasOwnProperty("key")){
+    console.log("`object`は`key`プロパティを持っている");
+}else{
+    console.log("`object`は`key`プロパティを持っていない");
+}
