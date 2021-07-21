@@ -1,9 +1,9 @@
-const obj ={
-    aaa: "value"
-};
-
-if(obj.hasOwnProperty("key")){
-    console.log("`object`は`key`プロパティを持っている");
-}else{
-    console.log("`object`は`key`プロパティを持っていない");
+const obj = {
+   "one": 1,
+   "two": 2,
+   "three": 3
 }
+
+console.log(Object.keys(obj));
+console.log(Object.values(obj));
+console.log(Object.entries(obj)); 
