@@ -1,14 +1,25 @@
-function block(timeout) {
-    const startTime = Date.now();
-
-    while (true) {
-        const startTime = Date.now() - startTime;
-        if (diffTime >= timeout) {
-            return; // 指定時間経過したら関数の実行を終了
+function dummyFetch(path, callback) {
+    setTimeout(() => {
+        if (path.startsWith("/success")) {
+            callback(null, { body: `Response body of ${path}` });
+        } else {
+            callback(new Error("NOT FOUND"));
         }
-    }
+    }, 1000 * Math.random());
 }
 
-console.log("処理を開始");
-blockTime(1000); // 他の処理を1000ミリ秒（1秒間）ブロックする
-console.log("この行が呼ばれるまで処理が1秒間ブロックされる");
+dummyFetch("/success/data", (error, response) => {
+    if (error) {
+        // この行は実行されません
+    } else {
+        console.log(response); // => { body: "Response body of /success/data" }
+    }
+});
+// /failure/data にリソースは存在しないので、`error`にはエラーオブジェクトが入る
+dummyFetch("/failure/data", (error, response) => {
+    if (error) {
+        console.log(error.message); // => "NOT FOUND"
+    } else {
+        // この行は実行されません
+    }
+})
