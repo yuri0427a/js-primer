@@ -1,23 +1,9 @@
-function dummyFetch(path) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (path.startsWith("/success")) {
-                resolve({ body: `Response body of ${path}` });
-            } else {
-                reject(new Error("NOT FOUND"));
-            }
-        }, 1000 * Math.random())
+// Promiseインスタンスでメソッドチェーン
+Promise.resolve()
+    // thenメソッドは新しい`Promise`インスタンスを返す
+    .then(() => {
+        console.log(1);
     })
-}
-
-dummyFetch("/success/data").then(function onFulfilled(response) {
-    console.log(response);
-}, function onRejected(error) {
-    // この行は実行されません
-});
-
-dummyFetch("/failure/data").then(function onFulfilled(response){
-
-}, function onRejcted(error) {
-    console.log(error);
-});
+    .then(() => {
+        console.log(2);
+    })
