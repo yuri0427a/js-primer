@@ -1,15 +1,12 @@
-function delay(timeoutMs){
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(timeoutMs);
-        }, timeoutMs);
-    });
+async function asyncMain() {
+    try {
+        const value = await Promise.reject(new Error("メッセージ"));
+    }catch (error) {
+        console.log(error.message); // => "エラーメッセージ"
+    }
 }
+// asyncMainはResolvedなPromiseを返す
+asyncMain().catch(error => {
+    // すでにtry...catchされているため、この行は実行されません
+});
 
-const promise1 = delay(1);
-const promise2 = delay(2);
-const promise3 = delay(3);
-
-Promise.all([promise1, promise2, promise3]).then(function (values) {
-    console.log(values);
-})
