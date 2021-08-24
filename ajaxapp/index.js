@@ -1,3 +1,23 @@
+function main() {
+    fetchUserInfo("js-primer-example")
+        .then((userInfo) => createView(userInfo))
+        .then((view) => displayView(view))
+        .catch((error) => {
+            console.error(`エラーが発生しました (${error})`);
+        })
+}
+
+async function main() {
+    try {
+        const userInfo = await fetchUserInfo("js-primer-example");
+        const view = createView(userInfo);
+        displayView(view);
+    } catch (error) {
+        console.error(`エラーが発生しました (${error})`);
+    }
+}
+
+
 function fetchUserInfo(userId) {
     fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
         .then(response => {
@@ -25,6 +45,34 @@ function fetchUserInfo(userId) {
 
 }
 
+function fetchUserInfo(userId) {
+    return fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(new Error(`${response.status}: ${response.statusText}`));
+            } else {
+                return response.json();
+            }
+        });
+}
+
+function getUserId() {
+    return document.getElementById("userId").value;
+}
+
+function createView(userInfo) {
+    return escapeHTML`
+    <h4>${userInfo.name} (@${userInfo.login})</h4>
+    <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+    <dl>
+        <dt>Location</dt>
+        <dd>${userInfo.location}</dd>
+        <dt>Repositories</dt>
+        <dd>${userInfo.public_repos}</dd>
+    </dl>
+    `;
+}
+
 function escapeSpecialChars(str) {
     return str
         .replace(/&/g, "&amp;")
@@ -43,4 +91,9 @@ function escapeSpecialChars(str) {
                 return result + String(value) + str;
             }
         });
+    }
+
+function displayView(view){
+    const result = document.getElementById("result");
+    result.innerHTML = view;
 }
