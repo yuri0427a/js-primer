@@ -7,8 +7,12 @@ export function escapeSpecialChars(str) {
         .replace(/'/g, "&#039;");
 }
 
+/**
+ * HTML文字列からHTML要素を作成して返す
+ * @param {string} html 
+ */
 export function htmlToElement(html) {
-    const templete = document.createElement("template");
+    const template = document.createElement("template");
     template.innerHTML = html;
     return template.content.firstElementChild;
 }
@@ -17,9 +21,8 @@ export function htmlToElement(html) {
  * HTML文字列からDOM Nodeを作成して返すタグ関数
  * @return {Element}
  */
-
-export function element(string, ...values) {
-    const htmlStrig = strings.reduce((result, str, i) => {
+export function element(strings, ...values) {
+    const htmlString = strings.reduce((result, str, i) => {
         const value = values[i - 1];
         if (typeof value === "string") {
             return result + escapeSpecialChars(value) + str;
@@ -27,9 +30,17 @@ export function element(string, ...values) {
             return result + String(value) + str;
         }
     });
+    return htmlToElement(htmlString);
 }
 
+/**
+ * コンテナ要素の中身をbodyElementで上書きする
+ * @param {Element} bodyElement コンテナ要素の中身となる要素
+ * @param {Element} containerElement コンテナ要素
+ */
 export function render(bodyElement, containerElement) {
+    // containerElementの中身を空にする
     containerElement.innerHTML = "";
+    // containerElementの直下にbodyElementを追加する
     containerElement.appendChild(bodyElement);
 }

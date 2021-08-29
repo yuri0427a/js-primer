@@ -1,4 +1,4 @@
-console.log("App.js: loaded");
+import { element } from "./view/html-util.js";
 
 export class App {
     mount() {
